@@ -185,7 +185,7 @@ const tryRegister = (user, classId) => {
 }
 
 
-const _run = async () => {
+const run = async () => {
     const {username, password} = await credentials.read();
     const classes = await readClasses();
 
