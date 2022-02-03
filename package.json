@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.24.0",
-    "colors": "^1.4.44-liberty-2",
+    "colors": "^1.4.0",
     "jsdom": "^19.0.0",
     "prompt": "^1.2.0"
   }
