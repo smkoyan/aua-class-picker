@@ -1,20 +1,30 @@
-const prompt = require('./prompt');
-const colors = require('colors/safe');
-const auaMessage = require('./auaMessage');
+const inquirer = require('inquirer');
 
-const properties = [
+const questions = [
     {
+        type: 'input',
         name: 'username',
-        description: auaMessage.create('username'),
+        message: 'What\'s your AUA username',
     },
     {
+        type: 'password',
+        mask: '*',
         name: 'password',
-        description: auaMessage.create('password'),
-        hidden: true
+        message: 'Enter your AUA password',
     }
 ];
 
 
-exports.read = function () {
-    return prompt.get(properties);
-}
+exports.read = async function () {
+    try {
+        return inquirer.prompt(questions);
+    } catch (e) {
+        if (e.isTtyError) {
+            // I will wait until this will happen and ...
+            console.log('Prompt couldn\'t be rendered in the current environment');
+            process.exit(1);
+        }
+        console.error(e);
+        console.log('Please save error text and contact with developer. Thanks.');
+    }
+};
