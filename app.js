@@ -5,7 +5,7 @@ const gradient = require('gradient-string');
 const { createSpinner } = require("nanospinner");
 const inquirer = require('inquirer');
 const fuzzy = require('fuzzy');
-const User = require('user');
+const User = require('./user');
 
 
 // TODO: move to some config function or init function dedicated to inquirer or just wrap inquirer in a module
