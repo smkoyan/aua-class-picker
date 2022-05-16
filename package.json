@@ -3,14 +3,27 @@
   "version": "1.0.1",
   "description": "CLI app that automates picking your preferred classes when the website is under pressure",
   "main": "app.js",
+  "bin": "app.js",
   "scripts": {
+    "run": "node app.js",
+    "build": "npx pkg -t linux,macos,win . --out-path dist",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "pkg": {
+    "scripts": [],
+    "assets": [
+      "node_modules/figlet/fonts/Standard.flf"
+    ],
+    "targets": [
+      "node16-linux-x64",
+      "node16-macos-x64",
+      "node16-win-x86"
+    ]
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/smkoyan/aua-class-picker"
   },
-  "bin": "app.js",
   "author": "Sargis Mkoyan",
   "license": "ISC",
   "dependencies": {
@@ -24,5 +37,9 @@
     "jsdom": "^19.0.0",
     "nanospinner": "^1.0.0",
     "prompt": "^1.2.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.33.4",
+    "pkg": "^5.6.0"
   }
 }
