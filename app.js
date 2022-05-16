@@ -12,6 +12,14 @@ const User = require('./user');
 inquirer.registerPrompt('checkbox-plus', require('inquirer-checkbox-plus-prompt'));
 
 
+const errors = {
+    login: {
+        CONNECTION_PROBLEM: 'CONNECTION_PROBLEM',
+        INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',
+    },
+};
+
+
 const welcome = () => {
     const message = `Welcome To ${'aua class picker'.toUpperCase()}`;
 
@@ -40,17 +48,26 @@ const login = async (username, password) => {
         loginResult = await user.login();
     } catch (e) {
         loginSpinner.error({text: `Something went wrong, check your connection`})
-        return null;
+        return {
+            success: false,
+            name: errors.login.CONNECTION_PROBLEM,
+        };
     }
 
     if (! (loginResult && loginResult.success)) {
         loginSpinner.error({text: `Invalid Credentials`})
-        return null;
+        return {
+            success: false,
+            name: errors.login.INVALID_CREDENTIALS,
+        };
     }
 
     loginSpinner.success({text: `Successfully Logged In`});
 
-    return user;
+    return {
+        success: true,
+        data: user,
+    };
 };
 
 
@@ -147,15 +164,33 @@ const tryRegister = (user, classId) => {
 
         return true;
     });
-}
+};
+
+const tryLogin = async () => {
+    const {username, password} = await credentials.read();
+
+    const loginResult = await login(username, password);
+
+    if (! loginResult.success) {
+        if (loginResult.name === errors.login.INVALID_CREDENTIALS) {
+            return tryLogin(username, password);
+        } else {
+            return null;
+        }
+    }
+
+    return loginResult.data;
+};
 
 
 const run = async () => {
     welcome();
 
-    const {username, password} = await credentials.read();
+    const user = await tryLogin();
 
-    const user = await login(username, password);
+    if (!user) {
+        return;
+    }
 
     const fetchClassesResult = await user.fetchClasses();
 
