@@ -1,5 +1,6 @@
 const axios = require("axios");
 const endpoints = require("./endpoints");
+const { JSDOM } = require('jsdom');
 
 class User {
     _axios = axios.create({
