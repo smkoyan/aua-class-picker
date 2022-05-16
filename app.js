@@ -2,7 +2,7 @@
 const credentials = require('./credentials');
 const figlet = require('figlet');
 const gradient = require('gradient-string');
-const { createSpinner } = require("nanospinner");
+const {createSpinner} = require("nanospinner");
 const inquirer = require('inquirer');
 const fuzzy = require('fuzzy');
 const User = require('./user');
@@ -43,7 +43,7 @@ const login = async (username, password) => {
         return null;
     }
 
-    if (! (loginResult && loginResult.success)) {
+    if (!(loginResult && loginResult.success)) {
         loginSpinner.error({text: `Invalid Credentials`})
         return null;
     }
@@ -98,11 +98,11 @@ const pickClasses = async (classes) => {
                 return answers.classInputType === 'list';
             },
             //default: ['yellow', 'red'],
-            source: function(answersSoFar, input) {
+            source: function (answersSoFar, input) {
                 console.log('trying')
                 input = input || '';
 
-                return new Promise(function(resolve) {
+                return new Promise(function (resolve) {
 
                     const fuzzyResult = fuzzy.filter(input, classes, {
                         extract: cls => cls.name,
@@ -110,7 +110,7 @@ const pickClasses = async (classes) => {
 
                     //console.log(JSON.stringify(fuzzyResult))
 
-                    const data = fuzzyResult.map(function(element) {
+                    const data = fuzzyResult.map(function (element) {
                         return {
                             name: element.original.name,
                             value: element.original.id
@@ -131,7 +131,6 @@ const pickClasses = async (classes) => {
     return answers.classes;
 
 
-
     // use `checkbox-plus` plugin of `inquirer` package
     // first ask if user wants enter raw ids
     // or choose from classes list
@@ -140,11 +139,10 @@ const pickClasses = async (classes) => {
 
 const tryRegister = (user, classId) => {
     return user.register(classId).then(result => {
-        if (! result.success) {
+        if (!result.success) {
             console.log(`Could not register to class: ${classId}, trying again`);
             return tryRegister(user, classId);
         }
-
         return true;
     });
 }
@@ -159,7 +157,7 @@ const run = async () => {
 
     const fetchClassesResult = await user.fetchClasses();
 
-    if (! fetchClassesResult.success) {
+    if (!fetchClassesResult.success) {
         // cannot fetch classes maybe exit program or let enter raw ids
         // will handle later
         return;
@@ -168,12 +166,8 @@ const run = async () => {
 
     const preferredClasses = await pickClasses(availableClasses);
 
-
-    // TODO: ask if wanna start registering now and start registration else hang there
-    /// ---------------------------------------------------------
-
-    // await Promise.all(classes.map(cls => tryRegister(user, cls)));
-    // console.log('Congratulations')
+    await Promise.all(preferredClasses.map(cls => tryRegister(user, cls)));
+    console.log('Congratulations')
 };
 
 void run()
@@ -194,7 +188,7 @@ const parseCommandLineArguments = () => {
         return arg.split('=');
     }).forEach(arg => {
         // array value
-        if ( arg[1].includes('[') ) {
+        if (arg[1].includes('[')) {
             cmdArgs[arg[0]] = JSON.parse(arg[1]);
         } else {
             cmdArgs[arg[0]] = arg[1]
