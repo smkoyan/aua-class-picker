@@ -207,8 +207,8 @@ const run = async () => {
     // TODO: ask if wanna start registering now and start registration else hang there
     /// ---------------------------------------------------------
 
-    // await Promise.all(classes.map(cls => tryRegister(user, cls)));
-    // console.log('Congratulations')
+    await Promise.all(preferredClasses.map(cls => tryRegister(user, cls)));
+    console.log('Congratulations')
 };
 
 void run()
